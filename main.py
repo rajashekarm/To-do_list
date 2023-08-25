@@ -27,9 +27,14 @@ def signup():
 
     if st.button("Sign Up"):
         hashed_password = sha256(new_password.encode()).hexdigest()
-        c.execute("INSERT INTO users (username, password) VALUES (?, ?)", (new_username, hashed_password))
-        conn.commit()
-        st.success("Account created successfully. You can now log in.")
+        try:
+            c.execute("INSERT INTO users (username, password) VALUES (?, ?)", (new_username, hashed_password))
+            conn.commit()
+            st.success("Account created successfully. You can now log in.")
+        except sqlite3.Error as e:
+            st.error("Error occurred during sign up.")
+            st.error(str(e))
+
 
 def login():
     st.subheader("Login")
