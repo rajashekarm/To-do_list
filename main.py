@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit_authenticator as sta
 
 def main():
     tasks = []
@@ -11,10 +12,14 @@ def main():
     def delete_task(i):
         tasks.pop(i)
 
-    username, password = st.auth(
-        login_message="Please login to access your tasks",
-        password_required=True,
+    # Initialize the authenticator
+    authenticator = sta.Authenticator(
+        app_name="To-Do List",
+        secret_key="my_secret_key",
     )
+
+    # Authenticate the user
+    username, password = authenticator.authenticate()
 
     if username is not None and password is not None:
         st.title(f"Welcome, {username}!")
