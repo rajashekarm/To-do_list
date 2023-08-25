@@ -1,33 +1,34 @@
 import streamlit as st
-import streamlit_authenticator as sta
+
+# Mock user data for authentication
+users = {
+    "user1": "password1",
+    "user2": "password2",
+}
+
+def login():
+    st.subheader("Login")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Login"):
+        if username in users and users[username] == password:
+            return True
+        else:
+            st.error("Invalid username or password")
+    return False
 
 def main():
-    tasks = []
+    st.title("To-Do List App")
+    st.write("Please log in to access your tasks.")
 
-    def add_task():
-        task = st.text_input("Enter a task:")
-        if task:
-            tasks.append(task)
+    authenticated = login()
 
-    def delete_task(i):
-        tasks.pop(i)
-
-    # Initialize the authenticator
-    authenticator = sta.Auth(
-        app_name="To-Do List",
-        secret_key="my_secret_key",
-    )
-
-    # Authenticate the user
-    username, password = authenticator.authenticate()
-
-    if username is not None and password is not None:
-        st.title(f"Welcome, {username}!")
-        st.table(tasks)
-        st.button("Add Task")
-        st.button("Delete Task")
-    else:
-        st.write("Please login to access your tasks")
+    if authenticated:
+        st.success("Logged in successfully!")
+        tasks = st.text_area("Enter your task:")
+        if st.button("Add Task"):
+            st.write(f"Added task: {tasks}")
 
 if __name__ == "__main__":
     main()
