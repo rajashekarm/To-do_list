@@ -13,7 +13,7 @@ def main():
         tasks.pop(i)
 
     # Initialize the authenticator
-    authenticator = sta.Authenticator(
+    authenticator = sta.Auth(
         app_name="To-Do List",
         secret_key="my_secret_key",
     )
