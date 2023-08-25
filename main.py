@@ -63,8 +63,12 @@ def show_tasks(username):
     st.subheader("Your Tasks")
     c.execute("SELECT task FROM tasks WHERE username = ?", (username,))
     tasks = c.fetchall()
-    for task in tasks:
-        st.write("- " + task[0])
+    if tasks:
+        for idx, task in enumerate(tasks, start=1):
+            st.write(f"{idx}. {task[0]}")
+    else:
+        st.write("No tasks available.")
+
 
 def main():
     st.title("To-Do List App")
